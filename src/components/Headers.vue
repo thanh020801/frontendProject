@@ -7,8 +7,12 @@
 			<div class="col-sm-5">
 				<input class="col-sm-12" type="text" v-model='search' placeholder="search" />
 			</div>
+
 			<div class="col-sm-3">
-				user
+				<router-link to='Login'>
+					<span v-if='app.user'>Hi, {{app.user.name}}</span>
+					<span v-else='app.user'>Login</span>
+				</router-link>
 			</div>
 		</div>
 	</div>
@@ -29,6 +33,15 @@
 		}
 	}
 </script>
-<style type="text/css">
-	
+<style type="text/css" scoped>
+	*{
+		color: black;
+
+	}
+	a{
+		text-decoration: none;
+	}
+	a:hover{
+		background-color: blue;
+	}
 </style>

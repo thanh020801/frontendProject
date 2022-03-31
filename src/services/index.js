@@ -18,11 +18,12 @@ function httpRequest(method='GET', url='/',data=null){
         'token': `beear ${token}`,
       }
     })
-    .catch((err)=>{
-       console.log(err.status)
-          console.log(err)
-          console.log('Ban ko du quyen ')
-    })
+    // .catch((err)=>{
+    //   alert(err.response.data)
+    //    // console.log("Status:",err.response.status,",json: ",err.response.data)
+    //       // console.log(err)
+    //       // console.log('Ban ko du quyen ')
+    // })
 
 
 }

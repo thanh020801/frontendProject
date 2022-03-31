@@ -3,16 +3,20 @@
 
 	<table>
 		<tr>
+			<th>STT</th>
 			<th>Name</th>
 			<th>Username</th>
 			<th>Admin</th>
+			<th>Lock</th>
 			<th>Cart</th>
 			<th>Bought</th>
 		</tr>
-		<tr v-for='item in users'>
+		<tr v-for='(item,index) in userList'>
+			<td>{{ index     }}</td>
 			<td>{{ item.name }}</td>
 			<td>{{ item.username }}</td>
 			<td>{{ item.admin }}</td>
+			<td>{{ item.block}}</td>
 			<td>{{ item.cart }}</td>
 			<td>{{ item.bought }}</td>
 		</tr>
@@ -20,26 +24,17 @@
 </template>
 
 <script >
+import { storeToRefs } from 'pinia'
+import { userStore } from '@/stores/userStore.js'
 export default {
+	setup(){
+			const main = userStore()
+			const { userList } = storeToRefs(main)
+			return { userList }
+	},
 	data(){
 		return {
 			users:[
-					{
-						id: 1,
-						name: "Thanh",
-						username: 'botuser1',
-						admin:1,
-						cart: ['1','2','3'],
-						bought: [ '4','5','6'] ,
-					},
-					{
-						id: 2,
-						name: "Tuan",
-						username: 'botuser2',
-						admin:0,
-						cart: ['1','2','3'],
-						bought: [ '4','5','6'] ,
-					},
 			],
 		}
 	},

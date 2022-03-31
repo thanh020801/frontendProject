@@ -1,5 +1,6 @@
 <template>
-  {{getNamePageDefault(), callAPI}}
+  {{getNamePageDefault()}}
+  <!-- {{ app.user }} -->
   <ul v-for='item in Pages'>
     <li>
 
@@ -11,8 +12,8 @@
     </router-link>|
     </li>
   </ul>
-  {{ user.acceptToken }}
-  {{ userList }}
+  
+  <!-- {{ userList }} -->
 </template>
 
 <script>
@@ -29,7 +30,7 @@
             {url: '/user-profile', name: 'User ProFile'},
             {url: '/ListClient', name: 'List Client'},
             {url: '/ListProduct', name: 'List Product'},
-            {url: '/Login', name: 'Login'},
+            // {url: '/Login', name: 'Login'},
           ],
           userList: [],
       }
@@ -38,18 +39,18 @@
       const product = productStore()
       const app = appStore()
       const main = userStore()
-      const { user } = storeToRefs(main)
+      const { userList } = storeToRefs(main)
       const { productList } = storeToRefs(product)
       return{
         productList,
         app,
-        user
+        userList,
       }
     },
     methods:{
       // Hàm lấy tên khi click vào đường dẫn
       getNamePage(page){
-        this.callAPI
+        // this.callAPI
         this.app.page = page
       },
       // Hàm lấy tên mặt định từ đường dẫn
@@ -71,20 +72,31 @@
           HTTPRequest('get','/',null).then((res)=>{
 
             this.productList= res.data
+          }).catch((err)=>{
+            alert(err.response.data)
           })         
         }
-        else if(this.app.page.url === '/ListClient'){
-          // const token = this.user.acceptToken
-          HTTPRequest('get','/admin/user',this.user).then((res)=>{
-            // console.log(res)
-            if(res.status !== 200){
 
-              console.log(res.json())
-            }
-            else{
-              this.userList = res.data
-            }
-          })         
+
+        else if(this.app.page.url === '/ListClient'){
+          
+          console.log(this.app.user)
+          if(!this.app.user){
+            alert("Bạn vui lòng đăng nhập để sử dụng được các chức năng")
+            this.$router.push('Login')
+            
+          }
+          else{
+            HTTPRequest('get','/admin/user',this.app.user).then((res)=>{
+              if(res.status === 200)
+                  this.userList = res.data
+            }).catch((err)=>{
+              if(err.response.status === 403)
+                alert("Không có quyền",err.response.data)
+              else
+                alert("Token",err.response.data)
+            })            
+          }  
         }        
       },
     }

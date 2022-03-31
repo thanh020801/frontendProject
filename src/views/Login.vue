@@ -9,6 +9,8 @@
 <script >
 	import { storeToRefs } from 'pinia'
   	import { userStore } from '@/stores/userStore.js'
+  	import { appStore } from '@/stores/appStore.js'
+
   	// import { userStore } from '@/stores/userStore.js'
   	import HTTPRequest from '@/services/index.js'
 	export default {
@@ -21,9 +23,11 @@
 		},
 	    setup(){
 		    const main = userStore()
+		    const app = appStore()
 		    const { user } = storeToRefs(main)
 		    return{
 	    	    user,
+	    	    app,
 	      	}
 	    },
 		computed:{
@@ -31,22 +35,14 @@
 				const username = this.username
 				const password = this.password
 				HTTPRequest('post','/login',{username,password}).then((res)=>{
-					// console.log('status',res.status)
 					if(res !== null){
-						this.user = res.data
+						alert('Đăng nhập thành công')
+						this.app.user = res.data
 					}
-					// if(res.status !=== 200){
-					// 	console.log('err')
-					// }
-					// else{
-						
-					// }
-					// console.log(res.status)
-					// console.log(res)
-					// const { acceptToken , ...Info} = res.data
-
-					
-					// console.log(this.user)
+        		}).catch((err)=>{
+        			if(err.response.status === 404){
+        				alert(err.response.data)
+        			}
         		})
 			}
 		},

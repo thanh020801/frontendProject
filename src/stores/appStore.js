@@ -7,7 +7,7 @@ export const appStore = defineStore('app', {
 				url:'/',
 				name:'Dashboard',
 			},
-			token: '',
+			user: null,
 		}
 	},
 	getters:{
