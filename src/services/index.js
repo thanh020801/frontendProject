@@ -15,6 +15,7 @@ function httpRequest(method='GET', url='/',data=null){
       data: data,
       headers:{
         'Content-Type' : 'application/json',
+        'charset' : 'utf-8',
         'token': `beear ${token}`,
       }
     })

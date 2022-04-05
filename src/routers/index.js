@@ -1,10 +1,15 @@
 import { createWebHistory, createRouter } from "vue-router"
 import DashboardLayout from '@/views/DashboardLayout.vue'
-import DashboardPage from "@/views/DashboardPage.vue";
+import DashboardPage from "@/views/DashboardPage.vue"
 import ListUserPage from '@/views/ListUserPage.vue'
 import Login from '@/views/Login.vue'
 import ProductsPage from '@/views/ProductsPage.vue'
 import UserProfilePage from '@/views/UserProfilePage.vue'
+import NotFoundPage from '@/views/NotFound.vue'
+import RegisterPage from '@/views/RegisterPage.vue'
+import AddAProduct from '@/views/AddAProduct.vue'
+
+
 const routes = [
   {
     path: "/",
@@ -18,7 +23,7 @@ const routes = [
       },
       {
         path: "user-profile",
-        name: "User Profile",
+        name: "UserProfile",
         component: UserProfilePage,
       },
       {
@@ -32,11 +37,26 @@ const routes = [
         component: ListUserPage,
       },
       {
-        path: "Login",
-        name: "Login",
-        component: Login,
+        path: "addNewProduct",
+        name: "addNewProduct",
+        component: AddAProduct,
       },
     ],
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegisterPage,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFoundPage,
   },
 ];
 const router = createRouter({
