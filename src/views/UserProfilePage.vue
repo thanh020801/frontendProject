@@ -1,41 +1,24 @@
 <template>
 	<div class="container-fluid">
-		<h1 class="h3 mb-0 text-gray-800">User Profile</h1>
-<!-- 		<div class="row">
-			<div class="col-sm-6">
-				<div>Họ và tên: {{!app.user.name ? "" : app.user.name}} </div>
-				<div>Tài khoản: {{!app.user ? info.username : app.user.username}} </div>
-				<div>Email: {{!app.user ? info.email : app.user.email}} </div>
-			</div>
-			<div class="col-sm-6">
-				<div>Trình độ: Chưa có </div>
-				<div>Kinh nghiệm: Chưa có </div>
-			</div>
-		</div> -->
-		<!-- ***************************************************************** -->
+		{{getUserInfo}}
 		<form className="col-md-12">
 			<div className="from-title row">
-				<div className='col-md-11 h3 mb-0 text-gray-800'><h2>Edit profile</h2></div>
-				<div className='col-md-1'><Link to='/admin/product'><span>trở về</span></Link></div>
+				<div className='col-md-10 h3 mb-0 text-gray-800'><h2>Edit profile</h2></div>
+				<div className='col-md-2'>
+					<Router-Link to='/admin/product'>
+						<span>trở về</span>
+					</Router-Link>
+				</div>
 			</div>
-<!-- 			<div className="form-row">
-				<div className="form-group col-md-4">
+			<div className="form-row">
+				<div className="form-group col-md-6">
 				    <label htmlFor="company">Company</label>
 				    <input 
 				    	type="text" className="form-control"
 				    	v-model='info.company'
 				    />
 				</div>
-				<div className="form-group col-md-4">
-				    <label htmlFor="account">Tài khoản</label>
-				    <input 
-				    	type="text" className="form-control"
-				    	placeholder="Nhập tên sản phẩm"
-				    	v-model='info.username'
-				    	required 
-				     />
-				</div>
-				<div className="form-group col-md-4">
+				<div className="form-group col-md-6">
 				    <label htmlFor="email">Email</label>
 				    <input 
 				    	type="email" className="form-control"
@@ -43,10 +26,10 @@
 				    	required 
 				    />
 				</div>
-			</div> -->
+			</div>
 
 
-<!-- 			<div className="form-row">
+			<div className="form-row">
 				<div className="form-group col-md-6">
 				    <label htmlFor="firstName">First name</label>
 				    <input 
@@ -63,10 +46,10 @@
 				    	required 
 				     />
 				</div>
-			</div> -->
+			</div>
 
 
-<!-- 			<div className="form-row">
+			<div className="form-row">
 				<div className="form-group col-md-12">
 				    <label htmlFor="Address">Address</label>
 				    <input 
@@ -74,11 +57,11 @@
 				    	v-model='info.address'
 				    />
 				</div>
-			</div> -->
+			</div>
 
 
 
-<!-- 			<div className="form-row">
+			<div className="form-row">
 				<div className="form-group col-md-4">
 				    <label htmlFor="city">City</label>
 				    <input 
@@ -101,7 +84,7 @@
 				    	required 
 				    />
 				</div>
-			</div> -->
+			</div>
 
 <!-- 		    <div className="form-group col-md-6">
 		      	<label htmlFor="image">Ảnh đại diện</label>
@@ -142,17 +125,16 @@
 		data(){
 			return {
 				info:{
-					company: " ",
-					username: " ",
-					email:  " ",
-					firstName: " ",
-					lastName: " ",
-					address: " ",
-					city: " ",
-					country: " ",
-					phoneNumber: " ",
+					company: "",
+					email:  "",
+					firstName: "",
+					lastName: "",
+					address: "",
+					city: "",
+					country: "",
+					phoneNumber: "0123456789",
 					avarta: " ",	
-					detail: " ",				
+					detail: "Học tại ĐHCT",				
 				},
 
 			}
@@ -162,18 +144,55 @@
 			return { app }
 		},
 		methods:{
-			// handelSubmit(){
-			// 	console.log(this.app.user._id)
-			// 	console.log(this.$router.params.id)
-			// 	// HTTPRequest('put', `/user/${ this.app.user._id }`, this.info)
-			// 	// 	.then((res)=>{
-			// 	// 		alert("update successfully")
-			// 	// 	})
-			// 	// 	.catch((err)=>{
-			// 	// 		console.log(err.response)
-			// 	// 	})
-
-			// },
+			handelSubmit(){
+				let req = {}
+				if(this.info.company){
+					req = {...req,company: this.info.company}
+				}
+				if(this.info.email){
+					req = {...req,email: this.info.email}
+				}
+				if(this.info.firstName){
+					req = {...req,firstName: this.info.firstName}
+				}
+				if(this.info.lastName){
+					req = {...req,lastName: this.info.lastName}
+				}
+				if(this.info.address){
+					req = {...req,address: this.info.address}
+				}
+				if(this.info.city){
+					req = {...req,city: this.info.city}
+				}
+				if(this.info.country){
+					req = {...req,country: this.info.country}
+				}
+				if(this.info.phoneNumber){
+					req = {...req,phoneNumber: this.info.phoneNumber}
+				}
+				if(this.info.avarta){
+					req = {...req,avarta: this.info.avarta}
+				}
+				if(this.info.detail){
+					req = {...req,detail: this.info.detail}
+				}
+				req = {...req , acceptToken:this.app.user.acceptToken}
+				HTTPRequest('put', `/admin/user/${this.app.user._id}`, req)
+					.then((res)=>{
+						console.log(res.data)
+						this.app.user = res.data
+						alert("update successfully")
+					})
+					.catch((err)=>{
+						console.log(err.response)
+					})
+				// console.log(this.app.user)
+			},
+		},
+		computed:{
+			getUserInfo(){
+				this.info = {...this.app.user}
+			},
 		},
 	}
 </script>

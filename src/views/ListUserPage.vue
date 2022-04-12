@@ -20,6 +20,7 @@
                             	<th>STT</th>
                                 <th>Name</th>
                                 <th>Username</th>
+                                <th>Email</th>
                                 <th>Admin</th>
                                 <th>Block</th>
                                 <th>Cart</th>
@@ -32,6 +33,7 @@
                             	<th>STT</th>
                                 <th>Name</th>
                                 <th>Username</th>
+                                <th>Email</th>
                                 <th>Admin</th>
                                 <th>Block</th>
                                 <th>Cart</th>
@@ -42,8 +44,9 @@
                         <tbody v-for='(item,index) in userList'>
                             <tr>
                             	<td>{{ index }}</td>
-                                <td>{{item.name}}</td>
+                                <td>{{item.firstName}} {{item.lastName}}</td>
                                 <td>{{ item.username }}</td>
+                                <td>{{ item.email }}</td>
                                 <td>{{ item.admin }}</td>
                                 <td>{{ item.block }}</td>
                                 <td>{{ item.cart }}</td>

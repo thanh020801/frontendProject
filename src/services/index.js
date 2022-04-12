@@ -9,6 +9,7 @@ function httpRequest(method='GET', url='/',data=null){
   // alert(token)
 
   const token = (data !== null && data.acceptToken !==null) ? data.acceptToken : " " 
+  // const token = localStorage.getItem("refreshToken");
   return axios({
       method: method,
       url: `http://localhost:5000${url}`,

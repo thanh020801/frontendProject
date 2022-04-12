@@ -1,11 +1,16 @@
 <template>
 	<div class="container-fluid">
-		<h1>Hello222333</h1>
-<!-- 		<h1 class="h3 mb-0 text-gray-800">Add New product</h1>
+<!-- 		<form>
+			<input type="text" v-model='product.name'>
+			<button @click='handelSubmit($event)'>Click</button>
+		</form> -->
 		<form className="col-md-12">
 			<div className="from-title row">
-				<div className='col-md-11 h3 mb-0 text-gray-800'><h2>Edit profile</h2></div>
-				<div className='col-md-1'><Link to='/admin/product'><span>trở về</span></Link></div>
+				<div className='col-md-9 h3 mb-0 text-gray-800'><h2>Add New product</h2></div>
+				<div className='col-md-3'>
+					<Router-Link to='/admin/product'><span>trở về</span>
+					</Router-Link>
+				</div>
 			</div>
 			<div className="form-row">
 				<div className="form-group col-md-4">
@@ -19,7 +24,6 @@
 				    <label htmlFor="price">price</label>
 				    <input 
 				    	type="text" className="form-control"
-				    	placeholder="Nhập giá sản phẩm"
 				    	v-model='product.price'
 				    	required 
 				     />
@@ -101,16 +105,15 @@
 			</div>
 
 		    <div className="form-group col-md-6">
-		      	<label htmlFor="image">Ảnh đại diện</label>
 		      	<input 
 		      		type="file" 
 		      		className="form-control"
-		      		v-model='product.avarta'
+		      		id='imageFile'
 		      	/>
 		    </div>
 			
  		 	<div className="form-group">
-	        	<label className="form-check-label" >About me</label><br/>
+	        	<label className="form-check-label" >Detail Product</label><br/>
 	        	<textarea placeholder="Mời bạn nhập" 
 	        		className="form-control col-md-12" 
 	        		v-model='product.detail'
@@ -125,7 +128,7 @@
 		  			UPDATE PROFILE
 		  		</span>
 		    </div>
-		</form> -->	
+		</form>	
 	</div>
 </template>
 <script>
@@ -137,34 +140,51 @@
 		data(){
 			return {
 				product:{
-					name: "",
-					price: "",
-					discount:  "",
-					brain: "",
-					kind: "",
-					origin: "",
-					color: "",
-					stuff: "",
-					size: "",
-					state: "",	
-					quantity: "",				
+					name: "Bàn phong thủy",
+					price: "50000000",
+					discount:  "0.2",
+					brain: "Storm",
+					kind: "Bàn",
+					origin: "Hàn quốc",
+					color: "Nâu, tím",
+					stuff: "Nhựa, cẩm thạch",
+					size: "50",
+					state: "mới",	
+					quantity: "20",
+					image: '',			
 				},
 
 			}
 		},
 		setup(){
-
+			const app = appStore()
+			return { app }
 		},
 		methods:{
-			handelSubmit(){
-				console.log(this.product)
-				// HTTPRequest('put', `/user/${ this.app.user._id }`, this.product)
-				// 	.then((res)=>{
-				// 		alert("update successfully")
-				// 	})
-				// 	.catch((err)=>{
-				// 		console.log(err.response)
-				// 	})
+			handelUrlImage(url){
+				let newUrl = ""
+				for(var i = url.length-1; i >= 0 ; i--){
+					if(url[i] === '/' || url[i] === '\\'){
+						break
+					}
+					else{
+						newUrl += url[i]
+					}
+				}
+				return `/src/assets/images/${newUrl.split('').reverse().join('')}`
+			},
+			handelSubmit(e){
+				this.product.image = document.getElementById("imageFile").value
+				this.product.image = this.handelUrlImage(this.product.image)
+				console.log(this.product.image)
+				const req = {...this.product , acceptToken:this.app.user.acceptToken}
+				HTTPRequest('post', `/admin`, req)
+					.then((res)=>{
+						alert("update successfully")
+					})
+					.catch((err)=>{
+						console.log(err.response)
+					})
 
 			},
 		},

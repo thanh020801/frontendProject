@@ -1,7 +1,5 @@
 <template>
     <div class="container-fluid">
-
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Product Table</h1>
             <router-link to='/addNewProduct' 
@@ -21,6 +19,7 @@
                     	<thead>
 							<tr>
 								<th>STT</th>
+								<th>Image</th>
 								<th>Name</th>
 								<th>Price</th>
 								<th>Discount</th>
@@ -37,6 +36,8 @@
 						</thead>
 						<tr v-for='(item,index) in productList' @key='index'>
 							<td>{{ index }}</td>
+							<td><img :src="item.image" 
+								:alt="item.image"></td>
 							<td>{{ item.name }}</td>
 							<td>{{ item.price }}</td>
 							<td>{{ item.discount }}</td>
@@ -49,43 +50,74 @@
 							<td>{{ item.state }}</td>
 							<td>{{ item.quantity }}</td>
 							<td @click='deleteProduct(item._id)'>X</td>
+
 						</tr>
+
 					</table>
             	</div>
         	</div>
         </div>
     </div>
-
+    <!-- {{path("Hello")}} -->
+    <img :src="path()" :alt="path()"/>
+    <img src="@/assets/img/hoa/h1.jpg" alt="@/assets/img/hoa/h1.jpg"/>
 </template>
 
-<script >
+<script type="module">
+	import requireImage from '@/services/callAPI.js'
+	import h1 from '@/assets/img/hoa/h1.jpg'
 	import { storeToRefs } from 'pinia'
   	import { productStore } from '@/stores/productStore.js'
+  	import { appStore } from '@/stores/appStore.js'
   	import HTTPRequest from '@/services/index.js'
 	export default {
 		data(){
 			return {
+				anh: "@/assets/img/hoa/h1.jpg",
+				anh1:h1,
 			}
 		},
 	    setup(){
 	      	const main = productStore()
+	      	const app = appStore()
 	      	const { productList } = storeToRefs(main)
 	      	return{
 	      	  	productList,
+	      	  	app,
 	      	}
+	    },
+	    computed:{
+
 	    },
 	    methods:{
 	    	deleteProduct(idProduct){
-	    		console.log(idProduct)
 	    		const endPoint = `/admin/${idProduct}`
 	    		console.log(endPoint)
-	    		HTTPRequest('delete', endPoint, null)
+	    		const req = {acceptToken:this.app.user.acceptToken}
+	    		HTTPRequest('delete', endPoint, req)
 	    		.then((res)=>{
-	    			alert(JSON.parse(res))
+	    			console('Delete successfully')
 	    		}).catch((err)=>{
 	    			console.log(err.response)
 	    		})
+	    	},
+
+	    	path(){
+	    		const link='@/assets/img/hoa/h1.jpg'
+	    		return link
 	    	}
+	    		// import i from '@/assets/img/hoa/h1.jpg'
+	    		// console.log(i)
+	    		// import urlImage from '@/assets/img/hoa/h1.jpg'
+	    		// console.log(url)
+
+	   //  		const requireImage = async (link='@/assets/img/hoa/h1.jpg') => {
+				//   const image = await import(link)
+				//   console.log(image)
+				//   return image
+				// }
+				// return requireImage
+	   //  	},
 	    }
 	}
 </script>
